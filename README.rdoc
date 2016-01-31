@@ -1,0 +1,6 @@
+Blockgraph
+==========
+
+This is a persisted version of the Twitter Block Chain.
+
+Due to the nature of the Twitter Block Chain, an extension for browsers,

@@ -1,0 +1,7 @@
+<h1>New Block</h1>
+
+<%= form_tag("/blocks", method: :post) do %>
+  <%= text_field_tag :username %>
+
+  <%= submit_tag "Block" %>
+<% end %>

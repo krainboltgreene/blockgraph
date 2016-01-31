@@ -1,0 +1,36 @@
+<h1>
+  <% if @block.connections.trunk %>
+    <%= @block.trunk.username %>
+  <% else %>
+    Pending block <%= @block.id %>
+  <% end %>
+</h1>
+
+<% if @block.connections.trunk %>
+  <section>
+    <h1>Trunk</h1>
+
+    <p>
+      <%= @block.trunk.username %> (<%= @block.trunk.provider %> / <%= @block.trunk.external_id %>)
+    </p>
+  </section>
+<% else %>
+  <p>
+    Currently we haven't processed the trunk.
+  </p>
+<% end %>
+
+<% if @block.leafs.any? %>
+  <section>
+    <h1>Leafs</h1>
+    <ul>
+      <% @block.leafs.each do |leaf| %>
+        <li><%= leaf.username %></li>
+      <% end %>
+    </ul>
+  </section>
+<% else %>
+  <p>
+    Currently we haven't processed any leaf nodes.
+  </p>
+<% end %>

@@ -1,0 +1,15 @@
+<h1>Blocks</h1>
+
+<p>
+  Refresh this page liberally.
+</p>
+
+<ul>
+  <% @blocks.each do |block| %>
+    <% if block.connections.trunk %>
+      <li><%= link_to block.trunk.username, block_path(block) %></li>
+    <% else %>
+      <li>Processing block <%= link_to block.id, block_path(block) %></li>
+    <% end %>
+  <% end %>
+</ul>
