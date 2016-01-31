@@ -10,8 +10,7 @@ class DigGraphWorker
     followers = client.lazily { client.follower_ids(profile.external_id.to_i).to_a }
 
     followers.each do |external_id|
-      ConnectProfileWorker.perform_async(block.id, external_id, profile.external_id)
-      BlockTwitterUserWorker.perform_async(account.id, external_id)
+      InitiateBlockWorker.perform_async(account.id, block.id, external_id, profile.external_id)
     end
 
     block.connections.leafs.missing(followers).pluck(:id).each do |profile_id|

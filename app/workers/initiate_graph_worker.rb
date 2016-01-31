@@ -10,8 +10,8 @@ class InitiateGraphWorker
 
     profile = Profile.twitter.where(external_id: user.id).first_or_create!
 
-    ConnectProfileWorker.perform_async(block.id, profile.id)
     BlockTwitterUserWorker.perform_async(account.id, profile.id)
+    ConnectProfileWorker.perform_async(block.id, profile.id)
     DigGraphWorker.perform_async(account.id, block.id, profile.id)
   end
 end
