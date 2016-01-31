@@ -5,6 +5,6 @@ class InitiateBlockWorker
     profile = Profile.twitter.where(external_id: external_id).first_or_create!
 
     ConnectProfileWorker.perform_async(block_id, profile.id, trunk_id)
-    BlockTwitterUserWorker.perform_async(account_id, external_id)
+    BlockTwitterUserWorker.perform_async(account_id, profile.id)
   end
 end

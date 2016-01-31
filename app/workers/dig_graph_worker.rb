@@ -7,7 +7,7 @@ class DigGraphWorker
     profile = Profile.find_by!(id: profile_id)
     client = Blockgraph::Twitter.new(account.access_public, account.access_private)
 
-    followers = client.lazily { client.follower_ids(profile.external_id.to_i).to_a }
+    followers = client.lazily { client.follower_ids(profile.external_id.to_i) }
 
     followers.each do |external_id|
       InitiateBlockWorker.perform_async(account.id, block.id, external_id, profile.external_id)
