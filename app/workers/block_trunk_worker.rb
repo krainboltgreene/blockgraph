@@ -2,13 +2,20 @@ class BlockTrunkWorker
   include Sidekiq::Worker
 
   def perform(block_id, username)
+    Rails.logger.info("Starting #{self.class}")
     @block = Block.find_by(id: block_id)
+    Rails.logger.info("Found block #{block_id}")
     @client = client
+    Rails.logger.info("Created client")
 
     lazily { @user = @client.user(username) }
+    Rails.logger.info("Got user")
     lazily { @client.block(@user) }
+    Rails.logger.info("Blocked user")
     lazily { @followers = @client.followers(@user) }
+    Rails.logger.info("Got followers")
     lazily { @client.block(@followers.map(&:id)) }
+    Rails.logger.info("Blocked followers")
 
     @profile = Profile.where(username: @user.screen_name, external_id: @user.id, provider: "twitter").first_or_create!
     @connection = Connection.create(block: @block, profile: @profile)
