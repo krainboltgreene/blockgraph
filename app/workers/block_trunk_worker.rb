@@ -2,31 +2,23 @@ class BlockTrunkWorker
   include Sidekiq::Worker
 
   def perform(block_id, username)
-    logger.info("Starting #{self.class}")
     @block = Block.find_by(id: block_id)
     logger.info("Found block #{block_id}")
     @client = client
-    logger.info("Created client")
+    logger.info("Authenticated client")
 
     lazily { @user = @client.user(username) }
     logger.info("Got user")
     lazily { @client.block(@user) }
-    logger.info("Blocked user")
-    lazily { @followers = @client.followers(@user) }
-    logger.info("Got followers")
-    lazily { @client.block(@followers.map(&:id)) }
-    logger.info("Blocked followers")
+    logger.info("Blocked #{username}")
 
     @profile = Profile.where(username: @user.screen_name, external_id: @user.id, provider: "twitter").first_or_create!
+    logger.info("Creating/finding profile")
+
     @connection = Connection.create(block: @block, profile: @profile)
+    logger.info("Storing trunk connection")
 
-    @followers.each do |follower|
-      BlockConnectionWorker.perform_async(@block.id, follower.screen_name, follower.id)
-    end
-
-    @block.leafs.where.not(external_id: followers.map(&:id)).pluck(:id).each do |leaf_id|
-      UnblockConnectionWorker.perform_async(@block.id, leaf_id)
-    end
+    HandleConnectionsWorker.perform_async(@block.id, @profile.id)
   end
 
   def lazily

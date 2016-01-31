@@ -1,4 +1,4 @@
-class UnblockConnectionWorker
+class HandleConnectionsWorker
   include Sidekiq::Worker
 
   def perform(block_id, profile_id)
@@ -9,11 +9,18 @@ class UnblockConnectionWorker
     @client = client
     logger.info("Created client")
 
-    lazily { @client.unblock(@profile.external_id) }
-    logger.info("Unblocked #{@profile.username}")
+    lazily { @user = @client.user(@profile.external_id) }
+    logger.info("Got user")
+    lazily { @followers = @client.followers(@user) }
+    logger.info("Got followers")
 
-    @profile.destroy
-    logger.info("Destroyed #{@profile.id}")
+    @followers.each do |follower|
+      BlockConnectionWorker.perform_async(@block.id, follower.screen_name, follower.id)
+    end
+
+    @block.leafs.where.not(external_id: followers.map(&:id)).pluck(:id).each do |leaf_id|
+      UnblockConnectionWorker.perform_async(@block.id, leaf_id)
+    end
   end
 
   def lazily
