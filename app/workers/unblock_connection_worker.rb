@@ -9,7 +9,7 @@ class UnblockConnectionWorker
     @client = client
     logger.info("Created client")
 
-    lazily { @client.unblock(@profile.external_id) }
+    lazily { @client.unblock(@profile.external_id.to_i) }
     logger.info("Unblocked #{@profile.username}")
 
     @profile.destroy

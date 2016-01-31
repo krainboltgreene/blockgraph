@@ -9,7 +9,7 @@ class HandleConnectionsWorker
     @client = client
     logger.info("Created client")
 
-    lazily { @user = @client.user(@profile.external_id) }
+    lazily { @user = @client.user(@profile.external_id.to_i) }
     logger.info("Got user")
     lazily { @followers = @client.followers(@user) }
     logger.info("Got followers")
