@@ -7,6 +7,10 @@ class Connection < ActiveRecord::Base
     joins(:profile).where.not(trunk_id: nil)
   end
 
+  scope :missing, ->(followers) do
+    where.not(profiles: { external_id: followers })
+  end
+
   def self.trunk
     joins(:profile).where(trunk_id: nil).first
   end

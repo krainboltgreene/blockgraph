@@ -15,7 +15,9 @@ class BlocksController < ApplicationController
 
   def create
     @block = current_account.blocks.create!
-    BlockTrunkWorker.perform_async(@block.id, params[:username].gsub("@", ""))
+    username = params[:username].gsub("@", "")
+
+    InitiateGraphWorker.perform_async(current_account.id, @block.id, username)
 
     redirect_to blocks_path
   end

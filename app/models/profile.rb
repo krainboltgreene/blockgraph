@@ -1,7 +1,18 @@
 class Profile < ActiveRecord::Base
   has_many :connections, dependent: :destroy
 
-  validates :username, presence: true
   validates :external_id, presence: true
   validates :provider, presence: true
+
+  after_create :request_information
+
+  scope :twitter, -> do
+    where(provider: "twitter")
+  end
+
+  private
+
+  def request_information
+    FetchTwitterUserWorker.perform_async(id)
+  end
 end

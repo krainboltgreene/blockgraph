@@ -10,6 +10,7 @@ class Accounts::OmniauthCallbacksController < Devise::OmniauthCallbacksControlle
     end
   end
 
+
   # More info at:
   # https://github.com/plataformatec/devise#omniauth
 
@@ -28,5 +29,9 @@ class Accounts::OmniauthCallbacksController < Devise::OmniauthCallbacksControlle
   # The path used when OmniAuth fails
   def after_omniauth_failure_path_for(scope)
     new_account_registration_url
+  end
+
+  def after_sign_in_path_for(resource)
+    blocks_url
   end
 end
