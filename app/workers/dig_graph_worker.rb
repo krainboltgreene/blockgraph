@@ -10,7 +10,7 @@ class DigGraphWorker
     followers = client.follower_ids(profile.external_id.to_i)
 
     followers.each do |external_id|
-      InitiateBlockWorker.perform_async(account.id, block.id, external_id, profile.external_id)
+      InitiateBlockWorker.perform_async(account.id, block.id, external_id, profile.id)
     end
 
     block.connections.leafs.missing(followers.map(&:to_s)).pluck(:id).each do |profile_id|
