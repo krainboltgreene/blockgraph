@@ -7,13 +7,13 @@ class DigGraphWorker
     profile = Profile.find_by!(id: profile_id)
     client = Blockgraph::Twitter.new(account.access_public, account.access_private)
 
-    followers = client.lazily { client.follower_ids(profile.external_id.to_i) }
+    followers = client.follower_ids(profile.external_id.to_i)
 
     followers.each do |external_id|
       InitiateBlockWorker.perform_async(account.id, block.id, external_id, profile.external_id)
     end
 
-    block.connections.leafs.missing(followers).pluck(:id).each do |profile_id|
+    block.connections.leafs.missing(followers.map(&:to_s)).pluck(:id).each do |profile_id|
       UnconnectProfileWorker.perform_async(block.id, profile_id)
       UnblockTwitterUserWorker.perform_async(block.id, profile_id)
     end

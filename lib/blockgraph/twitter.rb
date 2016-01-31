@@ -17,9 +17,6 @@ module Blockgraph
 
     def lazily
       yield
-    rescue ::Twitter::Error::TooManyRequests => exception
-      sleep(exception.rate_limit.reset_in + 1)
-      raise exception
     end
   end
 end

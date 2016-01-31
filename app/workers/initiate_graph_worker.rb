@@ -6,7 +6,7 @@ class InitiateGraphWorker
     block = Block.find_by!(id: block_id)
     client = Blockgraph::Twitter.new(account.access_public, account.access_private)
 
-    user = client.lazily { client.user(username) }
+    user = client.user(username)
 
     profile = Profile.twitter.where(external_id: user.id).first_or_create!
 

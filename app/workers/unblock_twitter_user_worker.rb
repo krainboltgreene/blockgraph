@@ -6,6 +6,6 @@ class UnblockTwitterUserWorker
     profile = Profile.find_by!(id: profile_id)
     client = Blockgraph::Twitter.new(account.access_public, account.access_private)
 
-    client.lazily { client.unblock(profile.external_id.to_i) }
+    client.unblock(profile.external_id.to_i)
   end
 end
