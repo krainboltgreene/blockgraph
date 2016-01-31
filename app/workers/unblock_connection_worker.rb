@@ -1,8 +1,6 @@
 class UnblockConnectionWorker
   include Sidekiq::Worker
 
-  sidekiq_options retry: false
-
   def perform(block_id, profile_id)
     @block = Block.find_by(id: block_id)
     logger.info("Found block #{block_id}")
@@ -22,7 +20,8 @@ class UnblockConnectionWorker
     yield
   rescue Twitter::Error::TooManyRequests => exception
     logger.info("Had to wait for #{exception.rate_limit.reset_in + 1}")
-    sleep(exception.rate_limit.reset_in + 1) and retry
+    sleep(exception.rate_limit.reset_in + 1)
+    raise exception
   end
 
   def client
