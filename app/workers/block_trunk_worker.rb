@@ -15,8 +15,8 @@ class BlockTrunkWorker
     @profile = Profile.where(username: @user.screen_name, external_id: @user.id, provider: "twitter").first_or_create!
     logger.info("Creating/finding profile")
 
-    @connection = Connection.create(block: @block, profile: @profile)
-    logger.info("Storing trunk connection")
+    @connection = Connection.where(block: @block, profile: @profile).first_or_create
+    logger.info("Creating/finding trunk connection")
 
     HandleConnectionsWorker.perform_async(@block.id, @profile.id)
   end

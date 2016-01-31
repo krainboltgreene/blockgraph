@@ -13,9 +13,8 @@ class BlockConnectionWorker
     @profile = Profile.where(username: username, external_id: external_id, provider: "twitter").first_or_create
     logger.info("Creating/finding profile")
 
-    @connection = Connection.create(block: @block, profile: @profile, trunk: @block.trunk)
-    logger.info("Storing trunk connection")
-
+    @connection = Connection.where(block: @block, profile: @profile, trunk: @block.trunk).first_or_create
+    logger.info("Creating/finding leaf connection")
   end
 
   def lazily
