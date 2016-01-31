@@ -1,6 +1,8 @@
 class BlockTrunkWorker
   include Sidekiq::Worker
 
+  sidekiq_options retry: false
+
   def perform(block_id, username)
     @block = Block.find_by(id: block_id)
     logger.info("Found block #{block_id}")

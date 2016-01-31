@@ -1,6 +1,8 @@
 class UnblockConnectionWorker
   include Sidekiq::Worker
 
+  sidekiq_options retry: false
+
   def perform(block_id, profile_id)
     @block = Block.find_by(id: block_id)
     logger.info("Found block #{block_id}")

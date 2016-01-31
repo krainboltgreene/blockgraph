@@ -1,2 +1,2 @@
 web: bin/rails server -p $PORT
-worker: bundle exec sidekiq  -v -c 2
+worker: bundle exec sidekiq  -v -c 5
