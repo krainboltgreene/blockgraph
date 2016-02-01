@@ -15,8 +15,10 @@ module Blockgraph
       end
     end
 
-    def lazily
+    def lazily(worker, *arguments)
       yield
+    rescue ::Twitter::Error::TooManyRequests => exception
+      worker.perform_in(exception.rate_limit.reset_in, *arguments)
     end
   end
 end
