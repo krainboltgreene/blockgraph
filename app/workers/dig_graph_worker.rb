@@ -18,6 +18,8 @@ class DigGraphWorker
         UnconnectProfileWorker.perform_async(block.id, profile_id)
         UnblockTwitterUserWorker.perform_async(block.id, profile_id)
       end
+
+      DigGraphWorker.perform_in(1.day, account_id, block_id, profile_id)
     end
   end
 end
