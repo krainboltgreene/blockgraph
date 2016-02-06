@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131210350) do
+ActiveRecord::Schema.define(version: 20160206211409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20160131210350) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "connections", ["block_id", "profile_id"], name: "index_connections_on_block_id_and_profile_id", unique: true, using: :btree
+  add_index "connections", ["block_id", "profile_id", "trunk_id"], name: "index_connections_on_block_id_and_profile_id_and_trunk_id", unique: true, using: :btree
   add_index "connections", ["block_id"], name: "index_connections_on_block_id", using: :btree
   add_index "connections", ["created_at"], name: "index_connections_on_created_at", using: :btree
   add_index "connections", ["profile_id"], name: "index_connections_on_profile_id", using: :btree
