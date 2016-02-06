@@ -3,6 +3,10 @@ class Connection < ActiveRecord::Base
   belongs_to :profile
   belongs_to :trunk, class_name: "Profile", foreign_key: "trunk_id"
 
+  default_scope  do
+    order(:created_at)
+  end
+
   scope :leafs, -> do
     joins(:profile).where.not(trunk_id: nil)
   end

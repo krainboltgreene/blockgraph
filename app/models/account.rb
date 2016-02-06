@@ -4,6 +4,10 @@ class Account < ActiveRecord::Base
 
   has_many :blocks, dependent: :destroy
 
+  default_scope  do
+    order(:created_at)
+  end
+
   validates :username, presence: true
   validates :external_id, presence: true
   validates :provider, presence: true

@@ -4,6 +4,10 @@ class Profile < ActiveRecord::Base
   validates :external_id, presence: true
   validates :provider, presence: true
 
+  default_scope  do
+    order(:created_at)
+  end
+
   after_create :request_information
 
   scope :twitter, -> do
