@@ -16,7 +16,7 @@ class DigGraphWorker
 
       block.connections.leafs.missing(followers.map(&:to_s)).pluck(:id).each do |profile_id|
         UnconnectProfileWorker.perform_async(block.id, profile_id)
-        UnblockTwitterUserWorker.perform_async(block.id, profile_id)
+        UnblockTwitterUserWorker.perform_async(account.id, profile_id)
       end
 
       DigGraphWorker.perform_in(1.day, account_id, block_id, profile_id)
