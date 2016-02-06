@@ -13,6 +13,6 @@ class Block < ActiveRecord::Base
   end
 
   def leafs
-    connections.leafs.map(&:profile)
+    Profile.where(id: connections.leafs.pluck(:profile_id))
   end
 end
