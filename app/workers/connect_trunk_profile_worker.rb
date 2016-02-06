@@ -7,6 +7,6 @@ class ConnectTrunkProfileWorker
     block = Block.find_by!(id: block_id)
     profile = Profile.find_by!(id: profile_id)
 
-    Connection.create!(block: block, profile: profile)
+    Connection.where(block: block, profile: profile).first_or_create!
   end
 end

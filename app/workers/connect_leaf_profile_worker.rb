@@ -8,6 +8,6 @@ class ConnectLeafProfileWorker
     profile = Profile.find_by!(id: profile_id)
     raise ActiveRecord::RecordNotFound, "wasn't given trunk" unless trunk_id
 
-    Connection.create!(block: block, profile: profile, trunk_id: trunk_id)
+    Connection.where(block: block, profile: profile, trunk_id: trunk_id).first_or_create!
   end
 end
