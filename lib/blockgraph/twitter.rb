@@ -19,6 +19,9 @@ module Blockgraph
       yield
     rescue ::Twitter::Error::TooManyRequests => exception
       worker.perform_in(exception.rate_limit.reset_in, *arguments)
+
+    rescue ::Twitter::Error::NotFound => exception
+      Rails.logger.info("Failed to find: #{arguments.inspect}")
     end
   end
 end
