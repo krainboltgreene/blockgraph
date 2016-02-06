@@ -6,6 +6,6 @@ class UnconnectProfileWorker
   def perform(block_id, profile_id)
     block = Block.find_by!(id: block_id)
 
-    block.leafs.where(profile_id: profile_id).each(&:destroy)
+    block.connections.leafs.where(profile_id: profile_id).each(&:destroy)
   end
 end
