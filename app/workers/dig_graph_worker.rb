@@ -5,7 +5,7 @@ class DigGraphWorker
     account = Account.find_by!(id: account_id)
     block = Block.find_by!(id: block_id)
     profile = Profile.find_by!(id: profile_id)
-    client = Blockgraph::Twitter.new(account.access_public, account.access_private)
+    client = Blockgraph::Twitter.new(account.access_public, account.access_private, logger)
 
     client.lazily(self.class, account_id, block_id, profile_id) do
       followers = client.follower_ids(profile.external_id.to_i).to_a

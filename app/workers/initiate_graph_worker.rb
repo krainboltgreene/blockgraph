@@ -4,7 +4,7 @@ class InitiateGraphWorker
   def perform(account_id, block_id, username)
     account = Account.find_by!(id: account_id)
     block = Block.find_by!(id: block_id)
-    client = Blockgraph::Twitter.new(account.access_public, account.access_private)
+    client = Blockgraph::Twitter.new(account.access_public, account.access_private, logger)
 
     client.lazily(self.class, account_id, block_id, username) do
       user = client.user(username)
