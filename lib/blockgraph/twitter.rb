@@ -22,6 +22,10 @@ module Blockgraph
 
     rescue ::Twitter::Error::NotFound => exception
       Rails.logger.info("Failed to find: #{arguments.inspect}")
+
+    rescue ::Twitter::Error::Forbidden => exception
+      Rails.logger.info("Failed to find: #{arguments.inspect}")
+
     end
   end
 end
