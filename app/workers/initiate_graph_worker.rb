@@ -10,6 +10,7 @@ class InitiateGraphWorker
       case exception
       when ::Twitter::Error::TooManyRequests
         self.class.perform_in(exception.rate_limit.reset_in + 1.second, account_id, block_id, username)
+      else raise exception
       end
     end
 

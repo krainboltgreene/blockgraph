@@ -13,6 +13,7 @@ class FetchTwitterUserWorker
         self.class.perform_in(exception.rate_limit.reset_in + 1.second, profile_id)
       when ::Twitter::Error::NotFound, ::Twitter::Error::Forbidden
         profile.destroy
+      else raise exception
       end
     end
 

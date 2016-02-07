@@ -13,15 +13,10 @@ class Profile < ActiveRecord::Base
   end
 
   after_create :request_information
-  after_create :ensure_existance
 
   private
 
   def request_information
     FetchTwitterUserWorker.perform_async(id)
-  end
-
-  def request_information
-    CheckTwitterUserWorker.perform_async(id)
   end
 end
