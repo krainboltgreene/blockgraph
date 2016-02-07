@@ -1,7 +1,7 @@
 class FetchTwitterUserWorker
   include Sidekiq::Worker
 
-  sidekiq_options queue: :fetching
+  sidekiq_options queue: :fetching, throttle: { key: "GET users/show", threshold: 180, period: 15.minutes }
 
   def perform(profile_id)
     profile = Profile.find_by!(id: profile_id)

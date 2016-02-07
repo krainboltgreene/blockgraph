@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/thinkthroughmath/sidekiq-throttler.git
+  revision: 99988a52ad59b83a26bef0b5e82a1441c88fbcb0
+  ref: 99988a5
+  specs:
+    sidekiq-throttler (0.4.1)
+      activesupport
+      sidekiq (< 5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -191,6 +200,7 @@ DEPENDENCIES
   pry-rails (= 0.3.4)
   rails (= 4.2.5.1)
   sidekiq (= 4.1.0)
+  sidekiq-throttler!
   sinatra (= 1.4.7)
   twitter (= 5.16.0)
 
