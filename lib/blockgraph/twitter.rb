@@ -4,6 +4,7 @@ module Blockgraph
     attr_reader :client
     delegate :follower_ids, to: :client
     delegate :block, to: :client
+    delegate :unblock, to: :client
     delegate :user, to: :client
 
     def initialize(access_public, access_private, logger)
