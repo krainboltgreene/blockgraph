@@ -31,7 +31,7 @@ module Blockgraph
     def lazily
       yield
     rescue => exception
-      logger(exception)
+      logger.info(exception)
       failure.call(exception)
     end
   end
