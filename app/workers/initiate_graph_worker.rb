@@ -1,6 +1,8 @@
 class InitiateGraphWorker
   include Sidekiq::Worker
 
+  sidekiq_options throttle: { key: "GET users/show", threshold: 180, period: 15.minutes }
+
   def perform(account_id, block_id, username)
     account = Account.find_by!(id: account_id)
     block = Block.find_by!(id: block_id)
