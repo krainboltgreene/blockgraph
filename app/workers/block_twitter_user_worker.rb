@@ -8,7 +8,16 @@ class BlockTwitterUserWorker
     profile = Profile.find_by!(id: profile_id)
     client = Blockgraph::Twitter.new(account.access_public, account.access_private, logger)
 
-    client.lazily(self.class, account_id, profile_id) do
+    client.failure do |exception|
+      case exception
+      when ::Twitter::Error::TooManyRequests
+        self.class.perform_in(exception.rate_limit.reset_in + 1.second, account_id, profile_id)
+      when ::Twitter::Error::NotFound, ::Twitter::Error::Forbidden
+        profile.destroy
+      end
+    end
+
+    client.lazily do
       client.block(profile.external_id.to_i)
     end
   end

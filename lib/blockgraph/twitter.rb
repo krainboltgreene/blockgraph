@@ -2,6 +2,7 @@ module Blockgraph
   class Twitter
 
     attr_reader :client
+    attr_reader :logger
     delegate :follower_ids, to: :client
     delegate :block, to: :client
     delegate :unblock, to: :client
@@ -15,20 +16,22 @@ module Blockgraph
         let.access_token_secret = access_private
       end
       @logger = logger
+      @success = -> (*arguments) { }
+      @failure = -> (*arguments) { }
     end
 
-    def lazily(worker, *arguments)
+    def failure(&block)
+      if block_given?
+        @failure = block
+      else
+        @failure
+      end
+    end
+
+    def lazily
       yield
-    rescue ::Twitter::Error::TooManyRequests => exception
-      @logger.info("Hit rate limit: #{arguments.inspect}")
-      worker.perform_in(exception.rate_limit.reset_in, *arguments)
-
-    rescue ::Twitter::Error::NotFound => exception
-      @logger.info("Failed to find: #{arguments.inspect}")
-
-    rescue ::Twitter::Error::Forbidden => exception
-      @logger.info("Failed to find: #{arguments.inspect}")
-
+    rescue => exception
+      failure.call(exception)
     end
   end
 end

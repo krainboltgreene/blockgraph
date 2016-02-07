@@ -8,15 +8,20 @@ class Profile < ActiveRecord::Base
     order(:created_at)
   end
 
-  after_create :request_information
-
   scope :twitter, -> do
     where(provider: "twitter")
   end
+
+  after_create :request_information
+  after_create :ensure_existance
 
   private
 
   def request_information
     FetchTwitterUserWorker.perform_async(id)
+  end
+
+  def request_information
+    CheckTwitterUserWorker.perform_async(id)
   end
 end

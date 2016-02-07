@@ -6,11 +6,17 @@ class InitiateGraphWorker
     block = Block.find_by!(id: block_id)
     client = Blockgraph::Twitter.new(account.access_public, account.access_private, logger)
 
-    client.lazily(self.class, account_id, block_id, username) do
+    client.failure do |exception|
+      case exception
+      when ::Twitter::Error::TooManyRequests
+        self.class.perform_in(exception.rate_limit.reset_in + 1.second, account_id, block_id, username)
+      end
+    end
+
+    client.lazily do
       user = client.user(username)
 
       profile = Profile.twitter.where(external_id: user.id).first_or_create!
-
       ConnectTrunkProfileWorker.perform_async(block.id, profile.id)
       BlockTwitterUserWorker.perform_async(account.id, profile.id)
 
