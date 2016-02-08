@@ -1,8 +1,6 @@
 class DigGraphWorker
   include Sidekiq::Worker
 
-  sidekiq_options throttle: { key: "GET followers/ids", threshold: 15, period: 15.minutes }
-
   def perform(account_id, block_id, profile_id)
     account = Account.find_by!(id: account_id)
     block = Block.find_by!(id: block_id)
