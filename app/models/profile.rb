@@ -1,4 +1,6 @@
 class Profile < ActiveRecord::Base
+  acts_as_paranoid without_default_scope: true
+
   has_many :connections, dependent: :destroy
 
   validates :external_id, presence: true
