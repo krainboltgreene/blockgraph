@@ -1,11 +1,11 @@
 GIT
-  remote: git://github.com/krainboltgreene/sidekiq-throttler.git
-  revision: dc9f60d85bdb76c8203ba09ff56357f10a674e7b
-  ref: dc9f60d
+  remote: git://github.com/thinkthroughmath/sidekiq-throttler.git
+  revision: 99988a52ad59b83a26bef0b5e82a1441c88fbcb0
+  ref: 99988a5
   specs:
     sidekiq-throttler (0.4.1)
       activesupport
-      sidekiq (>= 2.5, < 5.0)
+      sidekiq (< 5.0)
 
 GEM
   remote: https://rubygems.org/
