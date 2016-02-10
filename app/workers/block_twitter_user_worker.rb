@@ -19,7 +19,9 @@ class BlockTwitterUserWorker
     end
 
     client.lazily do
-      client.block(profile.external_id.to_i)
+      user = client.block(profile.external_id.to_i)
+
+      profile.update(username: user.screen_name)
     end
   end
 end

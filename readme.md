@@ -1,9 +1,8 @@
-account = Account.first
-client = Twitter::REST::Client.new do |let|
-  let.consumer_key = Rails.application.secrets.twitter_consumer_public
-  let.consumer_secret = Rails.application.secrets.twitter_consumer_private
-  let.access_token = account.access_public
-  let.access_token_secret = account.access_private
-end
-blocks = client.blocked_ids; nil
-blocks.count
+# Blockgraph
+
+  - [ ] Allow for unexclusion
+  - [ ] Fill in name from ban
+  - [ ] Upgrade to paranoia 3.0.0
+  - [ ] Unscope profile lookups where deletion doesn't matter
+  - [ ] Mute only graphs
+  - [ ] Graphs for active participants (rt, qt)
