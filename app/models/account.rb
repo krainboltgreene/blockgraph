@@ -3,6 +3,7 @@ class Account < ActiveRecord::Base
   devise :omniauthable, omniauth_providers: [:twitter]
 
   has_many :blocks, dependent: :destroy
+  has_many :exemptions, dependent: :destroy
 
   default_scope  do
     order(:created_at)

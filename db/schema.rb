@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160208053812) do
+ActiveRecord::Schema.define(version: 20160210062826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,18 @@ ActiveRecord::Schema.define(version: 20160208053812) do
   add_index "connections", ["profile_id"], name: "index_connections_on_profile_id", using: :btree
   add_index "connections", ["trunk_id"], name: "index_connections_on_trunk_id", using: :btree
   add_index "connections", ["updated_at"], name: "index_connections_on_updated_at", using: :btree
+
+  create_table "exemptions", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.text     "external_id"
+    t.uuid     "account_id",  null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "exemptions", ["account_id"], name: "index_exemptions_on_account_id", using: :btree
+  add_index "exemptions", ["created_at"], name: "index_exemptions_on_created_at", using: :btree
+  add_index "exemptions", ["external_id", "account_id"], name: "index_exemptions_on_external_id_and_account_id", using: :btree
+  add_index "exemptions", ["updated_at"], name: "index_exemptions_on_updated_at", using: :btree
 
   create_table "profiles", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "provider",    null: false

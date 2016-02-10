@@ -10,10 +10,12 @@
 
 <ul>
   <% @blocks.each do |block| %>
-    <% if block.connections.trunk %>
-      <li><%= link_to block.trunk.username, block_path(block) %></li>
-    <% else %>
-      <li>Processing block <%= link_to block.id, block_path(block) %></li>
-    <% end %>
+    <li>
+      <% if block.connections.trunk %>
+        <%= link_to block.trunk.username, block_path(block) %>
+      <% else %>
+        <%= link_to "Processing...", block_path(block) %>
+      <% end %>
+    </li>
   <% end %>
 </ul>

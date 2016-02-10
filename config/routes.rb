@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   }
 
   resources :blocks
+  resources :exemptions, only: [:create]
 end

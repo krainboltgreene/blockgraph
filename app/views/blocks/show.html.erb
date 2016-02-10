@@ -11,7 +11,12 @@
     <h1>Trunk</h1>
 
     <p>
-      <%= @block.trunk.username %> (<%= @block.trunk.provider %> / <%= @block.trunk.external_id %>)
+      <% if @block.trunk.username %>
+        <%= @block.trunk.username %>
+      <% else %>
+        Processing...
+      <% end %>
+      (<%= @block.trunk.provider %> / <%= @block.trunk.external_id %>)
     </p>
   </section>
 <% else %>
@@ -23,14 +28,44 @@
 <% if @block.leafs.any? %>
   <section>
     <h1>Leafs</h1>
-    <ul>
+    <ol>
       <% @block.leafs.each do |leaf| %>
-        <li><%= leaf.username %></li>
+        <li>
+          <% if leaf.username %>
+            <%= leaf.username %>
+          <% else %>
+            Processing...
+          <% end %>
+          <%= form_tag exemptions_path, method: :post, style: "display: inline;" do %>
+            <%= hidden_field_tag :id, leaf.id %>
+            <%= submit_tag "exempt" %>
+          <% end %>
+        </li>
       <% end %>
-    </ul>
+    </ol>
   </section>
 <% else %>
   <p>
     Currently we haven't processed any leaf nodes.
+  </p>
+<% end %>
+<% if @block.exemptions %>
+  <section>
+    <h1>Exemptions</h1>
+    <ol>
+      <% @block.exemptions.each do |leaf| %>
+        <li>
+          <% if leaf.username %>
+            <%= leaf.username %>
+          <% else %>
+            Processing...
+          <% end %>
+        </li>
+      <% end %>
+    </ol>
+  </section>
+<% else %>
+  <p>
+    Currently we haven't processed any exemptions.
   </p>
 <% end %>

@@ -14,11 +14,9 @@ class Profile < ActiveRecord::Base
     where(provider: "twitter")
   end
 
-  after_create :request_information
+  after_create :request_username
 
-  private
-
-  def request_information
+  private def request_username
     FetchTwitterUserWorker.perform_async(id)
   end
 end

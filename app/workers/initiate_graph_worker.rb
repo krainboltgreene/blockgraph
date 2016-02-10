@@ -17,7 +17,7 @@ class InitiateGraphWorker
     client.lazily do
       user = client.user(username)
 
-      profile = Profile.twitter.where(external_id: user.id).first_or_create!
+      profile = Profile.twitter.where(external_id: user.id_str).first_or_create!
       ConnectTrunkProfileWorker.perform_async(block.id, profile.id)
       BlockTwitterUserWorker.perform_async(account.id, profile.id)
 

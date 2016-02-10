@@ -13,6 +13,10 @@ class Block < ActiveRecord::Base
   end
 
   def leafs
-    Profile.where(id: connections.leafs.pluck(:profile_id))
+    Profile.where(id: connections.leafs.pluck(:profile_id)).where.not(external_id: account.exemptions.pluck(:external_id))
+  end
+
+  def exemptions
+    Profile.where(id: connections.leafs.pluck(:profile_id)).where(external_id: account.exemptions.pluck(:external_id))
   end
 end

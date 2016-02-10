@@ -16,7 +16,7 @@ class DigGraphWorker
     end
 
     client.lazily do
-      followers = client.follower_ids(profile.external_id.to_i).to_a
+      followers = client.follower_ids(profile.external_id.to_i).to_a - account.exemptions.pluck(:external_id)
 
       followers.each do |external_id|
         InitiateBlockWorker.perform_async(account.id, block.id, external_id, profile.id)
